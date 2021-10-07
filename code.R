@@ -295,31 +295,9 @@ out_lm      <- predict.lm(object = mm_lm, newdata = as.data.frame(pars_testing_l
 out_gam     <- predict.Gam(object = mm_gam, newdata = as.data.frame(pars_testing_lhs_org))
 out_gp      <- predict.GP(object = mm_gp, xnew = pars_testing_lhs_norm)$Y_hat
 
+## 5.1 Error (E) ----
 
-## 5.1 Absolute difference ----
-
-fun_absolute_difference <- function(predicted, observed) {
-  
-  abs_diff <- abs(predicted - observed)
-  
-  out <- c(
-    mean = mean(abs_diff),
-    min  = min(abs_diff),
-    max  = max(abs_diff)
-  )
-  
-  return(out)
-    
-}
-
-fun_absolute_difference(out_lm,  out_testing)
-fun_absolute_difference(out_gam, out_testing)
-fun_absolute_difference(out_gp,  out_testing)
-
-
-## 5.2 Relative difference ----
-
-fun_relative_difference <- function(predicted, observed) {
+getE <- function(predicted, observed) {
   
   rel_diff <- (predicted - observed) / observed
   
@@ -333,14 +311,56 @@ fun_relative_difference <- function(predicted, observed) {
   
 }
 
-fun_relative_difference(out_lm,  out_testing)
-fun_relative_difference(out_gam, out_testing)
-fun_relative_difference(out_gp,  out_testing)
+getE(out_lm,  out_testing)
+getE(out_gam, out_testing)
+getE(out_gp,  out_testing)
 
 
-## 5.3 Relative absolute difference ----
+## 5.2 Relative error (RE) ----
 
-fun_relative_absolute_difference <- function(predicted, observed) {
+getRE <- function(predicted, observed) {
+  
+  rel_diff <- (predicted - observed) / observed
+  
+  out <- c(
+    mean = mean(rel_diff),
+    min  = min(rel_diff),
+    max  = max(rel_diff)
+  )
+  
+  return(out)
+  
+}
+
+getRE(out_lm,  out_testing)
+getRE(out_gam, out_testing)
+getRE(out_gp,  out_testing)
+
+
+## 5.3 Absolute error (AE) ----
+
+getAE <- function(predicted, observed) {
+  
+  abs_diff <- abs(predicted - observed)
+  
+  out <- c(
+    mean = mean(abs_diff),
+    min  = min(abs_diff),
+    max  = max(abs_diff)
+  )
+  
+  return(out)
+    
+}
+
+getAE(out_lm,  out_testing)
+getAE(out_gam, out_testing)
+getAE(out_gp,  out_testing)
+
+
+## 5.4 Relative absolute error (RAE) ----
+
+getRAE <- function(predicted, observed) {
   
   relabs_diff <- abs(predicted - observed) / observed
   
@@ -354,14 +374,14 @@ fun_relative_absolute_difference <- function(predicted, observed) {
   
 }
 
-fun_relative_absolute_difference(out_lm,  out_testing)
-fun_relative_absolute_difference(out_gam, out_testing)
-fun_relative_absolute_difference(out_gp,  out_testing)
+getRAE(out_lm,  out_testing)
+getRAE(out_gam, out_testing)
+getRAE(out_gp,  out_testing)
 
 
-## 5.4 Root mean squared error ----
+## 5.5 Root mean squared error (RMSE) ----
 
-fun_RMSE <- function(predicted, observed) {
+getRMSE <- function(predicted, observed) {
   
   out <- sqrt(mean((predicted - observed)^2))
   
@@ -369,12 +389,12 @@ fun_RMSE <- function(predicted, observed) {
   
 }
 
-fun_RMSE(out_lm,  out_testing)
-fun_RMSE(out_gam, out_testing)
-fun_RMSE(out_gp,  out_testing)
+getRMSE(out_lm,  out_testing)
+getRMSE(out_gam, out_testing)
+getRMSE(out_gp,  out_testing)
 
 
-## 5.5 Calibration plots ----
+## 5.6 Calibration plots ----
 
 axis_lim <- c(-2000, 3000)  # limits for the axes
 par(mfrow = c(1, 3))        # plot three plots side-by-side
