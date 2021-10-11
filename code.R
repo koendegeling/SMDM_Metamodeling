@@ -299,12 +299,12 @@ out_gp      <- predict.GP(object = mm_gp, xnew = pars_testing_lhs_norm)$Y_hat
 
 getE <- function(predicted, observed) {
   
-  rel_diff <- (predicted - observed) / observed
+  diff <- predicted - observed
   
   out <- c(
-    mean = mean(rel_diff),
-    min  = min(rel_diff),
-    max  = max(rel_diff)
+    mean = mean(diff),
+    min  = min(diff),
+    max  = max(diff)
   )
   
   return(out)
