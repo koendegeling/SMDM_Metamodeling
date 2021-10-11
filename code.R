@@ -197,7 +197,7 @@ pars_training_rand_norm <- matrix(
   dimnames = list(NULL, c('StartAge', 'Interval', 'NrScr', 'FITcutoff'))
 )
 
-set.seed(123)
+set.seed(456)
 pars_testing_rand_norm <- matrix(
   data     = runif(n = n_testing * 4), 
   ncol     = 4, 
@@ -220,7 +220,7 @@ pars_testing_rand_org  <- t(apply(pars_testing_rand_norm, 1, fun_denormalize))
 set.seed(123)
 pars_training_lhs_norm <- maximinLHS(n = n_training, k = 4)
 
-set.seed(123)
+set.seed(456)
 pars_testing_lhs_norm  <- maximinLHS(n = n_testing, k = 4)
 
 # Providing names to the generated matrices
