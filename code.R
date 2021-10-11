@@ -24,7 +24,7 @@
 #   5. ASSESSING PERFORMANCE    assessing the performance of the metamodels on the testing dataset
 #   6. USING THE METAMODEL      using the metamodel to optimize the NMB
 #
-# The script was written en tested for R version 4.0.3 and required the following packages:
+# The script was written en tested for R version 4.0.3 and requires the following packages:
 #   - lhs     version 1.1.3
 #   - gam     version 1.20
 #   - GPfit   version 1.0-8
@@ -416,7 +416,9 @@ lines(x = axis_lim, y = axis_lim, col = 'red')
 
 ### 6. USING THE METAMODEL ----
 
-# Gausian process metamodel will be used to optimize the screening strategy with respect to the starting
+## 6.1 Optimization of StartAge ----
+
+# The Gausian process model will be used to optimize the screening strategy with respect to the starting
 # age given an interval of 2 years and for a FIT cut-off of 75. Based on the StartAge and Interval, the
 # number of screening rounds (NrScr) is calculated to ensure no screening is performed after the age 90.
 
@@ -442,6 +444,38 @@ par(mfrow = c(1, 1))
 plot(x = m_experiments_org[ , 'StartAge'], y = out_experiments, type = 'l',
      las = 1, xlab = 'StartAge', ylab = 'NMB (EUR 20k per QALY)',
      main = 'NMB as function of StartAge\nInterval = 2, FITcutoff = 75')
+
+
+## 6.2 Optimization using "optim" ----
+
+# To optimize the screening strategy with regard to all four parameters, optim, which is the standard 
+# optimization function in R, will be used in combination with the Gaussian process metamodel.
+
+# The optim function required a single function which it can call to evaluate the outcome for a set of
+# parameter values specified through a (named) vector. Therefore, the fn_optim is defined to exactly do
+# that by transforming the vector of parameters to a matrix and calling the predict.GP function and
+# returning only the outcome estimate.
+fn_optim <- function(x) predict.GP(object = mm_gp, xnew = matrix(data = x, ncol = 4))$Y_hat
+
+# The optim function also requires start values for the parameters, for which the current Dutch 
+# screening program is used. Bounds on the parameter are also defined, which is conveniently done by
+# simplifying these to be 0 and 1, given that the GP metamodel requires normalized inputs. The argument
+# "control = list(fnscale = -1)" is used to tell the algorithm that we want to maximize the outcome
+# rather than minimize it, which is the default.
+optim_out <- optim(
+  par     = pars_DutchScreening_norm, 
+  fn      = fn_optim, 
+  lower   = c(0, 0, 0, 0), 
+  upper   = c(1, 1, 1, 1), 
+  method  = 'L-BFGS-B',
+  control = list(fnscale = -1)
+)
+
+# Observing the results
+optim_out
+
+# Optimal screening strategy on the original parameter scale
+fun_denormalize(optim_out$par)
 
 
 
