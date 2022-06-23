@@ -1,8 +1,8 @@
-# This script is part of the "Metamodeling for Simulation-Based Optimization of Strategies in Healthcare"
-# short course presented by Hendrik Koffijberg (University of Twente, the Netherlands) and Koen Degeling
-# (The University of Melbourne, Australia) for the Society for Medical Decision Making. It illustrates 
-# the use of metamodels to address run time issues (i.e., the computational burden) of a health economic
-# simulation models to enable optimization.
+# This script is part of the "Reducing the Computational Burden of Health Economic Models and Analyses 
+# Using Metamodeling" workshop presented by Hendrik Koffijberg (University of Twente, the Netherlands) 
+# and Koen Degeling (Lumen Value & Access, US/Netherlands) for Health Technology Assessment 
+# International (HTAi). It illustrates the use of metamodels to address run time issues (i.e., the 
+# computational burden) of a health economic simulation models to enable optimization.
 #
 # The hypothetical case study used in this script is based on the paper "Using Metamodeling to Identify  
 # the Optimal Strategy for Colorectal Cancer Screening" in Value in Health (2021). The health economic
