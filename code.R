@@ -181,7 +181,7 @@ fun_denormalize(pars_DutchScreening_norm)
 
 # Defining the number of experiments that are to be included in the training dataset used to fit the 
 # metamodels (n_training) and testing dataset used to assess the performance of the models (n_testing)
-n_training <- 100
+n_training <- 50
 n_testing  <- 50
 
 
