@@ -430,7 +430,7 @@ m_experiments_org <- cbind(
   FITcutoff = 75
 )
 
-# Calculate the corresponding NrScr value
+# Calculate the corresponding NrScr value such that there are no strategies that screen beyond age 90.
 m_experiments_org[ , 'NrScr'] <- 1 + floor((90 - m_experiments_org[ , 'StartAge']) / 2)
 
 # Normalize the experiments to 0-1 for the Gausian process
